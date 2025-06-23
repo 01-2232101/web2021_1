@@ -48,7 +48,7 @@ app.post("/insert", (req, res) => {
             if(error) {
                 res.render('show', {mes:"エラーです"});
             }
-            res.render('show', {mes:"成功です"});
+            res.redirect('/db');
         });
     });
     console.log(req.body);
