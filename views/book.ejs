@@ -1,0 +1,15 @@
+<!Doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Show message</title>
+</head>
+<body>
+    <table>
+        <% for( let row of data ) { %>
+          <tr><td>本</td><td><%= row.book %></td></tr>
+          <tr><td>著者</td><td><%= row.writer %></td></tr>
+        <% } %>
+    </table>
+  </body>
+  </html> 

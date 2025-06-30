@@ -4,6 +4,7 @@ const app = express();
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('test.db');
 
+
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
 
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 app.get("/db", (req, res) => {
     db.serialize( () => {
         db.all("select id, 都道府県, 人口 from example;", (error, row) => {
+            console.log(row);
             if( error ) {
                 res.render('show', {mes:"エラーです"});
             }
