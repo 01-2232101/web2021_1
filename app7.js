@@ -27,31 +27,20 @@ app.get("/book", (req, res) => {
         
         db.all( sql, (error, row) => {
             if(error) {
-                console.log('Error: ', error );
+                res.render('home', {mes:"エラーです"});
                 return;
             }
-            for( let data of row ) {
-                console.log( data.id + ' : ' + data.name + ':' + data.name2 );
-            }
+            res.render('book', {data:row}); 
         });
     });
-        
-    db.all("select book, writer from example;", (error, row) => {
-        console.log(row);
-        if( error ) {
-            res.render('home', {mes:"エラーです"});
-        }
-        res.render('book', {data:row});
-    })
-})
-
+});     
+   
 app.get("/book/:id",(rep,res) =>{
     db.serialize( () => {
-        db.all("select id, book, writer from example where id=" + req.params.id + ";", (error, row) => {
+        db.all("select id, writer from book where id=" + req.params.id + ";", (error, row) => {
             if( error ) {
-                res.render('home', {mes:"エラーです"});
-            }
-            console.log("db.all から取得したデータ:", rows);
+                res.render('show', {mes:"エラーです"});
+            } 	
             res.render('db', {data:row});
         })
     })
