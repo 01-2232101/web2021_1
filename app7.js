@@ -19,32 +19,48 @@ app.get("/", (req, res) => {
 
 app.get("/book", (req, res) => {
     db.serialize( () => {
-        let sql = `
-        select book.id, book.name, writer.name as name2
-        from book inner join writer
-        on book.writer_id=writer.id;
-        `
-        
-        db.all( sql, (error, row) => {
-            if(error) {
-                res.render('home', {mes:"エラーです"});
-                return;
-            }
-            res.render('book', {data:row}); 
-        });
-    });
-});     
-   
-app.get("/book/:id",(rep,res) =>{
-    db.serialize( () => {
-        db.all("select id, writer from book where id=" + req.params.id + ";", (error, row) => {
+        db.all("select id, book.name from book;", (error, row) => {
             if( error ) {
-                res.render('show', {mes:"エラーです"});
+                res.render('home', {mes:"エラーです"});
+            }
+            res.render('book', {data:row});
+        })
+    })
+})
+   
+app.get("/book_db/:id",(req,res) =>{
+    db.serialize( () => {
+        let sql = `
+        SELECT book.id, book.name, writer.name AS name2
+        FROM book INNER JOIN writer
+        ON book.writer_id = writer.id
+        WHERE book.id = ${req.params.id};
+        `
+
+        db.all( sql, (error, row) => {
+            if( error ) {
+                res.render('home', {mes:"エラーです"});
             } 	
-            res.render('db', {data:row});
+            res.render('book_db', {data:row});
         })
     })
 })
 
+app.post("/new_book", (req, res) => {
+    let sql = `
+    insert into book (name,writer_id) values ("` + req.body.name + `",` + req.body.writer_id + `);
+    `
+    console.log(sql);
+    db.serialize( () => {
+        db.run( sql, (error, row) => {
+            console.log(error);
+            if(error) {
+                res.render('show', {mes:"エラーです"});
+            }
+            res.redirect('/book_db');
+        });
+    });
+    console.log(req.body);
+});
 
 app.listen(8080, () => console.log("Example app listening on port 8080!"));

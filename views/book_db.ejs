@@ -7,11 +7,10 @@
 <body>
     <h2><%= data[0].本 %>の詳細</h2>
     <table>
-        <% for( let row of data ) { %>
         <tr><td>ID:</td><td><%= data.id %></td></tr>
         <tr><td>本の名前:</td><td><%= data.name %></td></tr>
-        <tr><td>著者名:</td><td><%= data.name2 %></td></tr>
-        <% } %>
+        <tr><td>著者番号:</td><td><%= data.writer_id %></td></tr>
     </table>
+    <p><a href="/book">本のリストに戻る</a></p>
 </body>
 </html> 
